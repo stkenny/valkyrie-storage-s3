@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency 'valkyrie'
+  spec.add_dependency 'railties'
   spec.add_dependency 'aws-sdk-s3'
 
   spec.add_development_dependency "bundler", "~> 1.13"
@@ -33,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.48.0'
   spec.add_development_dependency 'yard'
   spec.add_development_dependency 'open4'
+  spec.add_development_dependency 'docker-stack'
 end

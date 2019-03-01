@@ -4,6 +4,7 @@
 
 require 'rubocop/rake_task'
 require 'rspec/core/rake_task'
+load 'tasks/docker.rake'
 
 task(:default).clear
 task default: [:ci]
