@@ -20,6 +20,7 @@ Style/FileName:
     - 'Gemfile'
     - '**/*.rake'
     - 'valkyrie-storage-s3.gemspec'
+    - 'lib/valkyrie-storage-s3.rb'
 RSpec/ExampleLength:
   Enabled: false
 RSpec/FilePath:

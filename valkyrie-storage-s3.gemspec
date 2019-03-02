@@ -2,11 +2,10 @@
 # frozen_string_literal: true
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "valkyrie_storage_s3/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "valkyrie-storage-s3"
-  spec.version       = ValkyrieStorageS3::VERSION
+  spec.version       = File.read(File.expand_path('../VERSION', __FILE__)).strip
   spec.authors       = ["Stuart Kenny"]
   spec.email         = ["kennystu@gmail.com"]
 

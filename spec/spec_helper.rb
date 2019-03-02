@@ -15,7 +15,7 @@ SimpleCov.start do
   add_filter 'vendor'
 end
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require 'valkyrie_storage_s3'
+require 'valkyrie-storage-s3'
 require 'pry'
 require 'action_dispatch'
 
