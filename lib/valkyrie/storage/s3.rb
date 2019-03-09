@@ -11,7 +11,7 @@ module Valkyrie::Storage
       @bucket = bucket_config[:bucket]
       Aws.config.update(aws_config)
 
-      @client = Aws::S3::Client.new
+      @client = Aws::S3::Resource.new
       @client.create_bucket(bucket_config)
     end
 
@@ -20,13 +20,10 @@ module Valkyrie::Storage
     # @param resource [Valkyrie::Resource]
     # @return [Valkyrie::StorageAdapter::StreamFile]
     def upload(file:, original_filename:, resource: nil)
-      @client.put_object(
-        bucket: @bucket,
-        body: ::File.open(file.path),
-        key: "#{resource.id}/#{original_filename}"
-      )
+      id = "#{resource.id}/#{original_filename}"
+      s3_object(id).upload_file(file.path)
 
-      find_by(id: "#{PROTOCOL}#{resource.id}/#{original_filename}")
+      find_by(id: "#{PROTOCOL}#{id}")
     end
 
     # Return the file associated with the given identifier
@@ -34,8 +31,7 @@ module Valkyrie::Storage
     # @return [Valkyrie::StorageAdapter::StreamFile]
     # @raise Valkyrie::StorageAdapter::FileNotFound if nothing is found
     def find_by(id:)
-      resp = @client.get_object(bucket: @bucket, key: file_key(id))
-      Valkyrie::StorageAdapter::StreamFile.new(id: id, io: resp.body)
+      Valkyrie::StorageAdapter::StreamFile.new(id: id, io: s3_object(id).get.body)
     rescue Aws::S3::Errors::NoSuchKey
       raise Valkyrie::StorageAdapter::FileNotFound
     end
@@ -46,17 +42,20 @@ module Valkyrie::Storage
       id.to_s.start_with?(PROTOCOL)
     end
 
-    def file_key(id)
-      id.to_s.gsub(/^s3:\/\//, '')
-    end
-
-    # Delete the file on disk associated with the given identifier.
+    # Delete the file associated with the given identifier.
     # @param id [Valkyrie::ID]
     def delete(id:)
-      @client.delete_object(
-        bucket: @bucket,
-        key: file_key(id)
-      )
+      s3_object(id).delete
     end
+
+    private
+
+      def file_key(id)
+        id.to_s.gsub(/^s3:\/\//, '')
+      end
+
+      def s3_object(id)
+        @client.bucket(@bucket).object(file_key(id))
+      end
   end
 end
