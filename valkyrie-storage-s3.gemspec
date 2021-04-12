@@ -18,17 +18,17 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'valkyrie', '~>2'
+  spec.add_dependency 'valkyrie', '~>2.1'
+  spec.add_dependency 'reform-rails', '0.2.2'
   spec.add_dependency 'railties'
   spec.add_dependency 'aws-sdk-s3'
 
   spec.add_development_dependency "bundler", "~> 1.13"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake", ">= 12.3.3"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "coveralls"
   spec.add_development_dependency "bixby"
   spec.add_development_dependency 'rubocop', '~> 0.48.0'
   spec.add_development_dependency 'yard'
