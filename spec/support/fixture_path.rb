@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 module FixturePath
+  def file_fixture_path
+    RSpec.configuration.fixture_path
+  end
   def fixture_path
     RSpec.configuration.fixture_path
   end
