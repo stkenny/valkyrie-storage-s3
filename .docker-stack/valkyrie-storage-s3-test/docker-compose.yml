@@ -1,20 +1,27 @@
 ---
 version: '3.4'
-volumes:
-  localstack:
+
 services:
   localstack:
     image: localstack/localstack
+    network_mode: bridge
     ports:
-      - 4572:4572
+      - "127.0.0.1:53:53"
+      - "127.0.0.1:53:53/udp"
+      - "127.0.0.1:443:443"
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4571:4571"
     environment:
       SERVICES: s3
+      DOCKER_HOST: unix:///var/run/docker.sock
     healthcheck:
       test:
-      - CMD
-      - curl
-      - "-f"
-      - http://127.0.0.1:4572/
+        - CMD
+        - curl
+        - "-f"
+        - http://127.0.0.1:4566/health?reload
       interval: 30s
       timeout: 5s
       retries: 3
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
